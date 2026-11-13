@@ -48,13 +48,13 @@ public class BookServiceTest {
         //when
         Mockito.when(bookService.findById(book1.getId())).thenReturn(Optional.of(book1));
         Mockito.when(memberRepository.findById(member1.getId())).thenReturn(Optional.of(member1));
-        Mockito.when(bookRepository.findByMemberAndStatus(member1.getId(), book1.getStatus())).thenReturn(books);
+        Mockito.when(bookRepository.findByMemberAndStatus(member1.getId(), Status.RENDU)).thenReturn(books);
         
         bookService.borrowBook(book1.getId(), member1.getId());
 
         //then
         Assertions.assertThat(book1.getStatus()).isEqualTo(Status.EMPRUNTE);
         Assertions.assertThat(book1.getBorrower()).isEqualTo(member1);
-        // Mockito.verify(bookRepository);
+        Mockito.verify(bookRepository).findByMemberAndStatus(member1.getId(), Status.EMPRUNTE);
     }
 }
