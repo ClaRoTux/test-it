@@ -57,4 +57,32 @@ public class BookServiceTest {
         Assertions.assertThat(book1.getBorrower()).isEqualTo(member1);
         Mockito.verify(bookRepository).findByMemberAndStatus(member1.getId(), Status.EMPRUNTE);
     }
+
+    @Test 
+    public void Test2(){
+        //given
+
+        Member member1 = new Member("member1");
+        memberRepository.save(member1);
+
+
+        Book book1 = new Book();
+        book1.setStatus(Status.EMPRUNTE);
+        book1.setBorrower(member1);
+        bookRepository.save(book1);
+
+        List<Book> books = new ArrayList<>();
+        
+
+        //when
+        Mockito.when(bookService.findById(book1.getId())).thenReturn(Optional.of(book1));
+        Mockito.when(memberRepository.findById(member1.getId())).thenReturn(Optional.of(member1));
+        Mockito.when(bookRepository.findByMemberAndStatus(member1.getId(), Status.RENDU)).thenReturn(books);
+        
+        bookService.returnBook(book1.getId(), member1.getId());
+
+        //then
+        Assertions.assertThat(book1.getStatus()).isEqualTo(Status.DISPONIBLE);
+        Mockito.verify(bookRepository).findByMemberAndStatus(member1.getId(), Status.RENDU);
+    }
 }
