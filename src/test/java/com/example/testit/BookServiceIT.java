@@ -43,7 +43,7 @@ public class BookServiceIT {
         Optional<Book> b1 = bookRepository.findById(book2.getId());
         Optional<Book> b2 = bookRepository.findById(book3.getId());
         Assertions.assertThat(b1.get().getStatus()).isEqualTo(Status.EMPRUNTE);
-        Assertions.assertThat(b2.get().getStatus()).isEqualTo(Status.RENDU); // Ou DISPONIBLE ??
+        Assertions.assertThat(b2.get().getStatus()).isEqualTo(Status.DISPONIBLE); // Ou DISPONIBLE ??
     
     }
 
