@@ -49,7 +49,7 @@ public class BookServiceTest {
         Mockito.when(bookService.findById(book1.getId())).thenReturn(Optional.of(book1));
         Mockito.when(memberRepository.findById(member1.getId())).thenReturn(Optional.of(member1));
         Mockito.when(bookRepository.findByMemberAndStatus(member1.getId(), Status.RENDU)).thenReturn(books);
-        
+
         bookService.borrowBook(book1.getId(), member1.getId());
 
         //then
@@ -78,11 +78,12 @@ public class BookServiceTest {
         Mockito.when(bookService.findById(book1.getId())).thenReturn(Optional.of(book1));
         Mockito.when(memberRepository.findById(member1.getId())).thenReturn(Optional.of(member1));
         Mockito.when(bookRepository.findByMemberAndStatus(member1.getId(), Status.RENDU)).thenReturn(books);
-        
+
         bookService.returnBook(book1.getId(), member1.getId());
 
         //then
-        Assertions.assertThat(book1.getStatus()).isEqualTo(Status.DISPONIBLE);
+        Assertions.assertThat(book1.getStatus()).isEqualTo(Status.RENDU);
         Mockito.verify(bookRepository).findByMemberAndStatus(member1.getId(), Status.RENDU);
+        Mockito.verify(mailService).sendMail(member1, null, null);
     }
 }
